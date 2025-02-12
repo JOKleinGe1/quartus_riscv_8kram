@@ -14,24 +14,45 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
 
 # INSTRUCTIONS:
 0. Install RISCV dev tools
+1. 
    from  https://github.com/YosysHQ/picorv32
-2. Install intel fpga quartus LITE edition
+   
+3. Install intel fpga quartus LITE edition
+   
    from https://www.intel.com/content/www/us/en/software-kit/825278/intel-quartus-prime-lite-edition-design-software-version-23-1-1-for-windows.html
-3. Check tools path in the makefile
-   e.g. CC := /opt/riscv32i/bin/riscv32-unknown-elf-gcc 
-4. Compile the project
+   
+5. Check tools path in the makefile
+   
+   e.g. CC := /opt/riscv32i/bin/riscv32-unknown-elf-gcc
+   
+7. Compile the project
+8. 
    > make clean
+   
    > make
-5. run intel-fpga quartus
+   
+9. run intel-fpga quartus
+    
    > ~/intelFPGA_lite/23.1std/quartus/bin/quartus &
+   
   with quartus:
+  
      File > open_project "quartus_mini_sys_riscv.qpf"
+     
      Processing > Start_Compilation
+     
    Connect the DE10Lite board to PC USB and connect FTDI USB-serial cable
+   
      TX to GPIO35, RX to ARDUINO_IO11, gnd to gnd. 
+     
    launch Pragrammer and Start programming the device
+   
    In a terminal :
+   
    > sudo screen /dev/ttyUSB0
+
    try typing some things ...
-   Leds count number of chars, Hex display their ASCII code and terminal should echo chars.
+   
+   Leds count number of chars, Hex display their ASCII code and terminal should echo chars
+   
    if not install the FTDI tools https://ftdichip.com/drivers
