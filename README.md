@@ -43,7 +43,7 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
      
    Connect the DE10Lite board to PC USB and connect FTDI USB-serial cable
    
-     TX(FPGA) at GPIO35 to RX(PC) yellow, RX(FPGA) at ARDUINO_IO11 to TX(PC) red, gnd to gnd. 
+     TX(FPGA) at GPIO35 to RX(PC) yellow, RX(FPGA) at ARDUINO_IO11 to TX(PC) orange, gnd to gnd (black). 
      
    launch Pragrammer and Start programming the device
    
