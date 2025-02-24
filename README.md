@@ -13,25 +13,25 @@ Design for education purpose.
 From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay. 
 
 # INSTRUCTIONS:
-0. Install RISCV dev tools
-1. 
+1. Install RISCV dev tools
+   
    from  https://github.com/YosysHQ/picorv32
    
-3. Install intel fpga quartus LITE edition
+2. Install intel fpga quartus LITE edition
    
    from https://www.intel.com/content/www/us/en/software-kit/825278/intel-quartus-prime-lite-edition-design-software-version-23-1-1-for-windows.html
    
-5. Check tools path in the makefile
+3. Check tools path in the makefile
    
    e.g. CC := /opt/riscv32i/bin/riscv32-unknown-elf-gcc
    
-7. Compile the project
-8. 
+4. Compile the project
+ 
    > make clean
    
    > make
    
-9. run intel-fpga quartus
+5. run intel-fpga quartus
     
    > ~/intelFPGA_lite/23.1std/quartus/bin/quartus &
    
@@ -43,7 +43,7 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
      
    Connect the DE10Lite board to PC USB and connect FTDI USB-serial cable
    
-     TX to GPIO35, RX to ARDUINO_IO11, gnd to gnd. 
+     TX(FPGA) at GPIO35 to RX(PC) yellow, RX(FPGA) at ARDUINO_IO11 to TX(PC) red, gnd to gnd. 
      
    launch Pragrammer and Start programming the device
    
