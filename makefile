@@ -1,7 +1,8 @@
-CC := /opt/riscv32i/bin/riscv32-unknown-elf-gcc
-NM:=/opt/riscv32i/bin/riscv32-unknown-elf-nm
-OBJCOPY:=/opt/riscv32i/bin/riscv32-unknown-elf-objcopy 
-OBJDUMP:=/opt/riscv32i/bin/riscv32-unknown-elf-objdump
+PATH:= $(PATH):/opt/riscv32i/bin/
+CC := riscv32-unknown-elf-gcc
+NM:= riscv32-unknown-elf-nm
+OBJCOPY:= riscv32-unknown-elf-objcopy 
+OBJDUMP:= riscv32-unknown-elf-objdump
 
 all : test.asm  test.map  test.mem32  tb_sys_picorv32.vcd test.mif 
 
