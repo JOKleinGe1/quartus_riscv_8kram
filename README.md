@@ -32,7 +32,7 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
    
    \> make
 
-2. See read / write cycle with
+2. See read / write cycles with
 
    \> more trace.txt
 
@@ -41,11 +41,11 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
    \> tkwave tb_sys_picorv32.vcd &
 # FPGA PROGRAMMING
    
-1. Run intel-fpga quartus
+1. Run intel-fpga quartus:
     
    > ~/intelFPGA_lite/23.1std/quartus/bin/quartus &
    
-2. with quartus:
+2. in quartus:
   
      File > open_project "quartus_mini_sys_riscv.qpf"
      
