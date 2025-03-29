@@ -106,7 +106,7 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 	// ************** TODO**************** 
 	// Add here READ and WRITE instructions to your IO peripheral registers, like this:
 	// else if (sys_XXX_read) io_read_data  <= { XXX }; (for READING register) or
-	// else if (sys_XXX_write)begin begin if (cpu_write_strobe[0]) XXX_reg [ 7: 0] <= cpu_write_data[ 7: 0]; ...(for WRITING)
+	// else if (sys_XXX_write)begin if (cpu_write_strobe[0]) XXX_reg [ 7: 0] <= cpu_write_data[ 7: 0]; ...(for WRITING)
 	
 	end
 	
