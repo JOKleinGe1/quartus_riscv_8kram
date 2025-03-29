@@ -33,7 +33,7 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 	
 	// ************** TODO**************** 
 	// Replace '0' in 6+0 by the number of r/w enable signals you need to add
-	reg [6+0:0] sys_rw_bus ; // grouping 12 individual read_enable and write_enable in a bus
+	reg [6+0:0] sys_rw_bus ; // grouping 7+0 individual read_enable and write_enable in a bus
 	wire global_rw =  |(sys_rw_bus) ;  // if any individual r/w is enable 
 
 	// select if data bus is read from RAM or IO		
