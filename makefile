@@ -24,8 +24,8 @@ test.sec : test.hex
 	$(OBJDUMP) $^  > $@
 test.asm : test.hex
 	$(OBJDUMP) $^  -d > $@
-tb_sys_picorv32.vvp  :  picorv32.v  system_picorv32.v  tb_sys_picorv32.v test.mem32 ram1port8k_sim.v BCDto7seg.v uart.v
-	iverilog  -o $@  picorv32.v  system_picorv32.v  tb_sys_picorv32.v  ram1port8k_sim.v BCDto7seg.v uart.v
+tb_sys_picorv32.vvp  :  picorv32.v  system_picorv32.v  tb_sys_picorv32.v test.mem32 ram1port8k_sim.v BCDto7seg.v 
+	iverilog  -o $@  picorv32.v  system_picorv32.v  tb_sys_picorv32.v  ram1port8k_sim.v BCDto7seg.v 
 tb_sys_picorv32.vcd :tb_sys_picorv32.vvp
 	vvp   $^ > trace.txt
 clean : 
