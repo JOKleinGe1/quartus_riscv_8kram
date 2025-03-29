@@ -12,7 +12,7 @@ synthesis : ok
 Design for education purpose. 
 From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay. 
 
-# INSTRUCTIONS:
+# INSTALL INSTRUCTIONS:
 1. Install RISCV dev tools
    
    from  https://github.com/YosysHQ/picorv32
@@ -24,6 +24,7 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
 3. Check tools path in the makefile
    
    e.g. CC := /opt/riscv32i/bin/riscv32-unknown-elf-gcc
+# GCC + VERILOG COMPILATION AND SIMULATION 
    
 4. Compile the project
  
@@ -40,19 +41,11 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
      File > open_project "quartus_mini_sys_riscv.qpf"
      
      Processing > Start_Compilation
-     
-   Connect the DE10Lite board to PC USB and connect FTDI USB-serial cable
    
-     TX(FPGA) at GPIO35 to RX(PC) yellow, RX(FPGA) at ARDUINO_IO11 to TX(PC) orange, gnd to gnd (black). 
-     
-   launch Pragrammer and Start programming the device
-   
-   In a terminal :
-   
-   > sudo screen /dev/ttyUSB0
+   Connect the DE10Lite board to PC USB  
+    
+   launch Programmer and Start programming the device
 
-   try typing some things ...
+   Reset the RISCV CPU (KEY0)
    
-   Leds count number of chars, Hex display their ASCII code and terminal should echo chars
-   
-   if not install the FTDI tools https://ftdichip.com/drivers
+   Well done !
