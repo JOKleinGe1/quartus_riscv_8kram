@@ -88,8 +88,8 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 		 {2'b01,32'h0000_8000}  : sys_rw_bus <= 7'b0100000; //led write @ 8000
 		 {2'b10,32'h0000_8004}  : sys_rw_bus <= 7'b1000000; //switch read @ 8004
 	// ************** TODO**************** 
-	// Add here the write ou read enable signal generation for your IO peripheral registers
-	// and and update all "7'b" consistency
+	// Add here the write and read enable signal generation for your IO peripheral registers
+	// and update all "7'b000..." consistency 
 	  	default                 : sys_rw_bus <= 7'b0000000; 
 	endcase
 		
