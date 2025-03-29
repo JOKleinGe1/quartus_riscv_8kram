@@ -43,7 +43,7 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
    
 1. Run intel-fpga quartus:
     
-   > ~/intelFPGA_lite/23.1std/quartus/bin/quartus &
+   \> ~/intelFPGA_lite/23.1std/quartus/bin/quartus &
    
 2. in quartus:
   
