@@ -37,9 +37,9 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
 
    \> more trace.txt
 
-3. View waveform in gtkwave:
+3. View waveforms in gtkwave:
 
-   \> tkwave tb_sys_picorv32.vcd &
+   \> gtkwave tb_sys_picorv32.vcd &
 # FPGA PROGRAMMING
    
 1. Run intel-fpga quartus:
