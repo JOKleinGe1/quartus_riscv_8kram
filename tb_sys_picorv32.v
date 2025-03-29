@@ -2,8 +2,6 @@
 
 `timescale 1 ns / 100 ps
 `define FCLOCK 50000000
-`define BAUDRATE 9600
-`define TCLOCKPERTBIT (`FCLOCK/`BAUDRATE)
 
 module tb_sys_picorv32;
 	reg clk = 1;
@@ -17,10 +15,6 @@ module tb_sys_picorv32;
     wire [6:0]hex3; 
     wire [6:0]hex4; 
     wire [6:0]hex5; 
-    reg rx = 1'b1;;
-    wire tx ;
-    reg [8*16-1:0] message_buffer = "Hello, World!   ";
-    integer bytenum, bitnum;
     
 	system_picorv32 dutsys (
 		. sys_clk  (clk        ),
@@ -32,9 +26,7 @@ module tb_sys_picorv32;
 		.hex2(hex2),
 		.hex3(hex3),
 		.hex4(hex4),
-		.hex5(hex5),
-		.tx(tx), 
-		.rx(rx)
+		.hex5(hex5)
 	);
 	
 	always #10 clk = ~clk; // 50MHz system clock
@@ -42,25 +34,15 @@ module tb_sys_picorv32;
 	initial begin
 		$dumpfile("tb_sys_picorv32.vcd");
 		$dumpvars(0, tb_sys_picorv32 );
-		resetn <= 1;
+		resetn <= 1'b1;
+		SW <=8'h0A;
 		repeat (2) @(posedge clk);
-		resetn <= 0;
+		resetn <= 1'b0;
 		repeat (2) @(posedge clk);
-		resetn <= 1;
-		repeat (`TCLOCKPERTBIT) @(posedge clk);
-/*
-		for (bytenum = 15; bytenum >0; bytenum = bytenum - 1)  begin
-			rx <= 1'b0; //start 
-			repeat (`TCLOCKPERTBIT) @(posedge clk);
-			for (bitnum = 0; bitnum<8; bitnum = bitnum+1) begin
-				rx <= message_buffer[bytenum*8+bitnum]; 
-				repeat (`TCLOCKPERTBIT) @(posedge clk);
-			end
-			rx <= 1'b1; //stop 
-			repeat (2*`TCLOCKPERTBIT) @(posedge clk);
-			repeat (8*`TCLOCKPERTBIT) @(posedge clk);
-		end 	
-*/	
+		resetn <= 1'b1;
+		repeat (100) @(posedge clk);	
+		SW <= 8'h55;
+		repeat (150) @(posedge clk);	
 	$finish;
 	end
 	

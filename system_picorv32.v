@@ -1,6 +1,6 @@
 //file : system_picorv32.v
 
-module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,input [7:0] SW,output [6:0] hex0,output [6:0] hex1,output [6:0] hex2,output [6:0] hex3, output [6:0] hex4,output [6:0] hex5, output tx, input rx);
+module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,input [7:0] SW,output [6:0] hex0,output [6:0] hex1,output [6:0] hex2,output [6:0] hex3, output [6:0] hex4,output [6:0] hex5);
 	wire 		cpu_trap;
 	wire 		cpu_rw_cycle;
 	wire 		cpu_instr_fetch;
@@ -10,33 +10,32 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 	wire [3:0] 	cpu_write_strobe;
 	wire [31:0] cpu_read_data;
 	reg   [31:0] io_read_data;
-	reg   [23:0] HexData;
 
 	wire 		sys_write_enable = (| cpu_write_strobe); // if one or more byte written
 	wire 		sys_read_enable = cpu_rw_cycle & (! sys_write_enable);
 
 	wire [31:0] ram_read_data; 
-	wire [7:0] rx_data ;
 
 	//	individual read_enable and write_enable
 	wire sys_RAM_read, sys_RAM_write; //RAM-8KB:0-0x1FFF(byte) = 0-7FF(32-bit-word)
 	wire sys_LED_read, sys_LED_write;
 	wire sys_7SEG_read, sys_7SEG_write;
 	wire sys_SWITCH_read;
-	wire sys_RXDATA_read;
+	// ************** TODO**************** 
+	// Add here the declaration of your r/w enable signal for IO peripheral registers, like
+	// wire sys_XXX_reg_read;	
 	
-	reg  [7:0] tx_data;
-	reg  [7:0] control_register;
-	wire [7:0] status_register;
+	reg   [23:0] HexData;
+	// ************** TODO**************** 
+	// Add here your IO control registers declaration. like :
+	// reg  [7:0] XXX_control_register; ("REG" if write access) or 
+	// wire [7:0] XXX_status_register; ("WIRE" if read only);
 	
-	reg [11:0] sys_rw_bus ; // grouping 12 individual read_enable and write_enable in a bus
+	// ************** TODO**************** 
+	// Replace '0' in 6+0 by the number of r/w enable signals you need to add
+	reg [6+0:0] sys_rw_bus ; // grouping 12 individual read_enable and write_enable in a bus
 	wire global_rw =  |(sys_rw_bus) ;  // if any individual r/w is enable 
 
-	// degrouping individual read_enable and write_enable
-	assign {sys_RXDATA_read,sys_UARTSR_read, sys_UARTCR_read ,sys_UARTCR_write , sys_TXDATA_write , 
-		sys_SWITCH_read, sys_LED_write,sys_LED_read, sys_RAM_write, sys_RAM_read, 
-		sys_7SEG_write,sys_7SEG_read} = sys_rw_bus;
-	
 	// select if data bus is read from RAM or IO		
 	assign cpu_read_data =   (sys_RAM_read) ? ram_read_data :  io_read_data ;
 	
@@ -69,24 +68,29 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 		.q 			( ram_read_data )
 	);
 
+	// degrouping individual read_enable and write_enable
+	// ************** TODO**************** 
+	// Insert your r/w enable signals in the following instruction, like 
+	// assign {sys_XXX_read, sys_XXX_write, ..., sys_SWITCH_read, ...
+	   assign {sys_SWITCH_read, sys_LED_write,sys_LED_read, 
+		sys_7SEG_write,sys_7SEG_read,sys_RAM_write, sys_RAM_read} = sys_rw_bus;
+	
 	// r/w individual signal generation from address decoding 
 	always @({sys_read_enable,sys_write_enable,cpu_address}) 
 	 casex ({sys_read_enable,sys_write_enable,cpu_address}) 	
-	  //ram read 0-1FFF :
-		 {2'b10,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 12'b000000000100; 
-	  //ram write 0-1FFF :
-		 {2'b01,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 12'b000000001000; 
-		 {2'b10,32'h0000_8000}  : sys_rw_bus <= 12'b000000010000; //led read @ 8000
-		 {2'b01,32'h0000_8000}  : sys_rw_bus <= 12'b000000100000; //led write @ 8000
-		 {2'b10,32'h0000_8010}  : sys_rw_bus <= 12'b000000000001; //7Seg read @ 8010
-		 {2'b01,32'h0000_8010}  : sys_rw_bus <= 12'b000000000010; //7seg write @ 8010
-		 {2'b10,32'h0000_8004}  : sys_rw_bus <= 12'b000001000000; //switch read @ 8004
-		 {2'b01,32'h0000_8060}  : sys_rw_bus <= 12'b000010000000; //txdata write @ 8060
-		 {2'b01,32'h0000_8064}  : sys_rw_bus <= 12'b000100000000; //uartcr write @ 8064
-		 {2'b10,32'h0000_8064}  : sys_rw_bus <= 12'b001000000000; //uartcr read @ 8064
-		 {2'b10,32'h0000_8068}  : sys_rw_bus <= 12'b010000000000; //uartsr read @ 8068
-		 {2'b10,32'h0000_806C}  : sys_rw_bus <= 12'b100000000000; //uart rx data read @ 806C
-	  	default                 : sys_rw_bus <= 12'b000000000000; 
+	  //ram read 0-1FFF (sys_RAM_read):
+		 {2'b10,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 7'b0000001; 
+	  //ram write 0-1FFF (sys_RAM_write) :
+		 {2'b01,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 7'b0000010; 
+		 {2'b10,32'h0000_8010}  : sys_rw_bus <= 7'b0000100; //7Seg read @ 8010
+		 {2'b01,32'h0000_8010}  : sys_rw_bus <= 7'b0001000; //7seg write @ 8010
+		 {2'b10,32'h0000_8000}  : sys_rw_bus <= 7'b0010000; //led read @ 8000
+		 {2'b01,32'h0000_8000}  : sys_rw_bus <= 7'b0100000; //led write @ 8000
+		 {2'b10,32'h0000_8004}  : sys_rw_bus <= 7'b1000000; //switch read @ 8004
+	// ************** TODO**************** 
+	// Add here the write ou read enable signal generation for your IO peripheral registers
+	// and and update all "7'b" consistency
+	  	default                 : sys_rw_bus <= 7'b0000000; 
 	endcase
 		
 	always @(posedge sys_clk)	begin
@@ -99,11 +103,11 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 			if (cpu_write_strobe[1]) HexData[15: 8] <= cpu_write_data[15:8]; 
 			if (cpu_write_strobe[2]) HexData[23:16] <= cpu_write_data[23:16]; 
 		end
-		else if (sys_UARTSR_read) io_read_data  <= { 24'd0 , status_register }; 
-		else if (sys_UARTCR_write & cpu_write_strobe[0]) control_register <= cpu_write_data[ 7: 0]; 
-		else if (sys_UARTCR_read) io_read_data  <= { 24'd0 , control_register };  
-		else if (sys_TXDATA_write & cpu_write_strobe[0]) tx_data <= cpu_write_data[ 7: 0]; 
-		else if (sys_RXDATA_read) io_read_data  <= { 24'd0 , rx_data }; 
+	// ************** TODO**************** 
+	// Add here READ and WRITE instructions to your IO peripheral registers, like this:
+	// else if (sys_XXX_read) io_read_data  <= { XXX }; (for READING register) or
+	// else if (sys_XXX_write)begin begin if (cpu_write_strobe[0]) XXX_reg [ 7: 0] <= cpu_write_data[ 7: 0]; ...(for WRITING)
+	
 	end
 	
 	BCDto7seg BCDto7seg_0 (.din(HexData[3:0]),.abcdef(hex0[6:0]));
@@ -112,9 +116,8 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 	BCDto7seg BCDto7seg_3 (.din(HexData[15:12]),.abcdef(hex3[6:0]));
 	BCDto7seg BCDto7seg_4 (.din(HexData[19:16]),.abcdef(hex4[6:0]));
 	BCDto7seg BCDto7seg_5 (.din(HexData[23:20]),.abcdef(hex5[6:0]));
-	
-	uart uart1 ( .clock(sys_clk), .reset_n(sys_resetn), .tx(tx), .tx_data(tx_data), .write_new_tx_data(sys_TXDATA_write),
-			.control_register(control_register), .status_register(status_register),
-			 .rx(rx),  .rx_data(rx_data), .read_last_rx_data(sys_RXDATA_read));
+		
+	// ************** TODO**************** 
+	// Add here your IO peripheral instances
 
 endmodule
