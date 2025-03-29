@@ -26,26 +26,35 @@ From JOKlein, Dept GEii-1,IUT Cachan, Univ Paris-Saclay.
    e.g. CC := /opt/riscv32i/bin/riscv32-unknown-elf-gcc
 # GCC + VERILOG COMPILATION AND SIMULATION 
    
-4. Compile the project
+1. Compile the project, in a terminal:
  
-   > make clean
+   \> make clean
    
-   > make
+   \> make
+
+2. See read / write cycle with
+
+   \> more trace.txt
+
+3. View waveform in gtkwave:
+
+   \> tkwave tb_sys_picorv32.vcd &
+# FPGA PROGRAMMING
    
-5. run intel-fpga quartus
+1. Run intel-fpga quartus
     
    > ~/intelFPGA_lite/23.1std/quartus/bin/quartus &
    
-  with quartus:
+2. with quartus:
   
      File > open_project "quartus_mini_sys_riscv.qpf"
      
      Processing > Start_Compilation
    
-   Connect the DE10Lite board to PC USB  
+3. Connect the DE10Lite board to PC USB  
     
-   launch Programmer and Start programming the device
+4. Launch Programmer and Start programming the device
 
-   Reset the RISCV CPU (KEY0)
+5. Reset the RISCV CPU (KEY0 on DE10Lite board)
    
    Well done !
