@@ -46,13 +46,6 @@ https://fpgasoftware.intel.com/eula.
 		(line (pt 0 64)(pt 16 64)(line_width 3))
 	)
 	(port
-		(pt 0 80)
-		(input)
-		(text "rx" (rect 0 0 8 12)(font "Arial" ))
-		(text "rx" (rect 21 75 29 87)(font "Arial" ))
-		(line (pt 0 80)(pt 16 80)(line_width 1))
-	)
-	(port
 		(pt 200 32)
 		(output)
 		(text "LEDR[7..0]" (rect 0 0 48 12)(font "Arial" ))
@@ -100,13 +93,6 @@ https://fpgasoftware.intel.com/eula.
 		(text "hex5[6..0]" (rect 0 0 38 12)(font "Arial" ))
 		(text "hex5[6..0]" (rect 141 123 179 135)(font "Arial" ))
 		(line (pt 200 128)(pt 184 128)(line_width 3))
-	)
-	(port
-		(pt 200 144)
-		(output)
-		(text "tx" (rect 0 0 7 12)(font "Arial" ))
-		(text "tx" (rect 172 139 179 151)(font "Arial" ))
-		(line (pt 200 144)(pt 184 144)(line_width 1))
 	)
 	(drawing
 		(rectangle (rect 16 16 184 160)(line_width 1))

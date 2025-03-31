@@ -1,4 +1,6 @@
 //file : system_picorv32.v
+`define C_WR (2'b01)
+`define C_RD (2'b10)
 
 module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,input [7:0] SW,output [6:0] hex0,output [6:0] hex1,output [6:0] hex2,output [6:0] hex3, output [6:0] hex4,output [6:0] hex5);
 	wire 		cpu_trap;
@@ -79,14 +81,14 @@ module system_picorv32 (input sys_clk,input sys_resetn,output reg [7:0] LEDR,inp
 	always @({sys_read_enable,sys_write_enable,cpu_address}) 
 	 casex ({sys_read_enable,sys_write_enable,cpu_address}) 	
 	  //ram read 0-1FFF (sys_RAM_read):
-		 {2'b10,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 7'b0000001; 
+		 {`C_RD,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 7'b0000001; 
 	  //ram write 0-1FFF (sys_RAM_write) :
-		 {2'b01,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 7'b0000010; 
-		 {2'b10,32'h0000_8010}  : sys_rw_bus <= 7'b0000100; //7Seg read @ 8010
-		 {2'b01,32'h0000_8010}  : sys_rw_bus <= 7'b0001000; //7seg write @ 8010
-		 {2'b10,32'h0000_8000}  : sys_rw_bus <= 7'b0010000; //led read @ 8000
-		 {2'b01,32'h0000_8000}  : sys_rw_bus <= 7'b0100000; //led write @ 8000
-		 {2'b10,32'h0000_8004}  : sys_rw_bus <= 7'b1000000; //switch read @ 8004
+		 {`C_WR,32'b00000000_00000000_000xxxxx_xxxxxxxx}:sys_rw_bus <= 7'b0000010; 
+		 {`C_RD,32'h0000_8010}  : sys_rw_bus <= 7'b0000100; //7Seg read @ 8010
+		 {`C_WR,32'h0000_8010}  : sys_rw_bus <= 7'b0001000; //7seg write @ 8010
+		 {`C_RD,32'h0000_8000}  : sys_rw_bus <= 7'b0010000; //led read @ 8000
+		 {`C_WR,32'h0000_8000}  : sys_rw_bus <= 7'b0100000; //led write @ 8000
+		 {`C_RD,32'h0000_8004}  : sys_rw_bus <= 7'b1000000; //switch read @ 8004
 	// ************** TODO**************** 
 	// Add here the write and read enable signal generation for your IO peripheral registers
 	// and update all "7'b000..." consistency 
